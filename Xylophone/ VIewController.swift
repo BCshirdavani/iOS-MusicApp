@@ -7,16 +7,16 @@
 //
 
 import UIKit
-import AVKit
-import AudioToolbox
+//import AVKit
+//import AudioToolbox
 import AVFoundation //  for m4a sound
 
-class ViewController: UIViewController{
-    
+class ViewController: UIViewController, AVAudioPlayerDelegate{
 //    var player : AVAudioPlayer?
-//    let soundArray = ["note1","note2","note3","note4","note5","note6","note7"]
+    let soundArray = ["note1","note2","note3","note4","note5","note6","note7"]
     let recordingArray = ["skiBiDeep", "bweeb", "bopBop", "baDopBop", "diBiDeep", "imA","scatMan"]
-
+    
+    var audioPlayer : AVAudioPlayer!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,20 +28,32 @@ class ViewController: UIViewController{
         print(sender.tag)
 
         //  Xylaphone sounds
-//        if let soundURL = Bundle.main.url(forResource : soundArray[sender.tag - 1], withExtension : "wav"){
-//            var mySound: SystemSoundID = 0
-//            AudioServicesCreateSystemSoundID(soundURL as CFURL, &mySound)
-//            // Play
-//            AudioServicesPlaySystemSound(mySound)
-//        }
+//        playSound(note : sender.tag)
+        
         //  ScatMan sounds
-        if let soundURL = Bundle.main.url(forResource : recordingArray[sender.tag - 1], withExtension : "m4a"){
-            var mySound: SystemSoundID = 0
-            AudioServicesCreateSystemSoundID(soundURL as CFURL, &mySound)
-            // Play
-            AudioServicesPlaySystemSound(mySound)
+        playScat(note : sender.tag)
+    }
+    
+    func playSound(note : Int){
+        let soundURL = Bundle.main.url(forResource: soundArray[note - 1], withExtension: "wav")
+        do{
+            audioPlayer = try AVAudioPlayer(contentsOf: soundURL!)
         }
-
+        catch{
+            print(error)
+        }
+        audioPlayer.play()
+    }
+    
+    func playScat(note : Int){
+        let soundURL = Bundle.main.url(forResource: recordingArray[note - 1], withExtension: "m4a")
+        do{
+            audioPlayer = try AVAudioPlayer(contentsOf: soundURL!)
+        }
+        catch{
+            print(error)
+        }
+        audioPlayer.play()
     }
     
   
